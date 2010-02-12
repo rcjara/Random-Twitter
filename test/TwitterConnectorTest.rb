@@ -37,12 +37,27 @@ describe TwitterConnector do
         @tweeter.logged_on?.should be(true)
       end
 
-      it "should grab the text from a list of recent tweets" do
-        @tweeter.recent_content.class.should be(Array)
-      end
-
       it "should be able to post things" do
         pending("I should write this")
+      end
+      
+      context "on collecting recent content" do
+        before(:all) do
+          @content = @tweeter.recent_content
+        end
+        
+        it "the content should be an array" do
+          @content.class.should be(Array)
+        end
+        
+        it "each piece of content should be a string" do
+          @content.each { |item| item.should be(String) }
+        end
+        
+        it "should have many pieces of content" do
+          @content.should have_at_least(10).things
+          
+        end
       end
     end
   end
