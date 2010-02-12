@@ -26,11 +26,11 @@ describe TwitterConnector do
       end
 
       it "should show that it has succesfully logged on" do
-        pending("I should write this")
+        @tweeter.logged_on.should be(true)
       end
 
-      it "should grab a list of recent tweets" do
-        pending("I should write this")  
+      it "should grab the text from a list of recent tweets" do
+        @tweeter.recent_content.class.should be(Array)
       end
 
       it "should be able to post things" do
