@@ -1,19 +1,33 @@
 class TwitterConnector
+  attr_reader :user_name
+  
   def initialize(config_file)
     load_config_file(config_file)
   end
   
   def load_config_file(config_file)
     File.open(config_file, 'r') do |file|
-      first_regex_result = file.read_line.scan(/(username:)(\s*)(\S+)/)
-      second_regex_result = file.read_line.scan(/(password:)(\s*)(\S+)/)
+      first_regex_result = file.readline.scan(/(username:)(\s*)(\S+)/)
+      second_regex_result = file.readline.scan(/(password:)(\s*)(\S+)/)
       begin
-        @username = first_regex_result[0][2]
+        @user_name = first_regex_result[0][2]
         @password = second_regex_result[0][2]
       rescue
-        throw "Bad Config File"
+        raise "Bad Config File"
       end
     end
+  end
+  
+  def has_password?
+    !@password.nil?
+  end
+  
+  def password
+    raise "Error: You cannot access a TwitterConnector's password."
+  end
+  
+  def connect
+    
   end
   
   

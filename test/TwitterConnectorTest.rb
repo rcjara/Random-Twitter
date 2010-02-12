@@ -1,4 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/RandomTwitterHelper.rb')
+require File.expand_path(File.dirname(__FILE__) + '/../lib/TwitterConnector.rb')
 
 describe TwitterConnector do
   context "on loading a good config file" do
@@ -16,7 +17,7 @@ describe TwitterConnector do
     end
 
     it "should not show the password" do
-      lambda { @tweeter.password }.should raise_error("No method error")
+      lambda { @tweeter.password }.should raise_error("Error: You cannot access a TwitterConnector's password.")
     end
 
     context "on connecting to twitter" do
