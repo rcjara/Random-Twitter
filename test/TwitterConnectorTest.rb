@@ -38,7 +38,10 @@ describe TwitterConnector do
       end
 
       it "should be able to post things" do
-        pending("I should write this")
+        num = rand(1000)
+        post = "Testing post: #{num}"
+        @tweeter.tweet(post)
+        @tweeter.most_recent_post.should == post
       end
       
       context "on collecting recent content" do
