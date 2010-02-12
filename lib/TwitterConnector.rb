@@ -25,6 +25,17 @@ class TwitterConnector
     current_trends[0..limit].collect { |trend| Twitter::Search.new(trend.query).collect{|result| result.text } }.flatten
   end
   
+  def tweet(post)
+    raise "Not logged on" unless logged_on?
+    @user.update(post)
+  end
+  
+  def most_recent_post
+    raise "Not logged on" unless logged_on?
+    Twitter::Search.new.from(@user_name).to_a.first.text
+  end
+  
+  
   def has_password?
     !@password.nil?
   end

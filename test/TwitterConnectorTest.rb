@@ -41,6 +41,7 @@ describe TwitterConnector do
         num = rand(1000)
         post = "Testing post: #{num}"
         @tweeter.tweet(post)
+        sleep(15)
         @tweeter.most_recent_post.should == post
       end
       
