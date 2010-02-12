@@ -1,3 +1,5 @@
+require 'twitter'
+
 class TwitterConnector
   attr_reader :user_name
   
@@ -27,8 +29,12 @@ class TwitterConnector
   end
   
   def connect
-    
+    twitter_auth = Twitter::HTTPAuth.new(@user_name, @password)
+    @user = Twitter::Base.new(twitter_auth)
   end
   
-  
+  def logged_on?
+    return false unless @user
+    @user.verify_credentials
+  end
 end
