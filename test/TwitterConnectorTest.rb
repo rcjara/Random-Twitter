@@ -47,7 +47,7 @@ describe TwitterConnector do
       
       context "on collecting recent content" do
         before(:all) do
-          @content = @tweeter.recent_content(1)
+          @content = TwitterConnector.recent_popular_content(1)
         end
         
         it "the content should be an array" do

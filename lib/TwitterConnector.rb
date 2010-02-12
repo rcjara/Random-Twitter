@@ -20,11 +20,6 @@ class TwitterConnector
     end
   end
   
-  def recent_content(limit = -1)
-    current_trends = Twitter::Trends.current
-    current_trends[0..limit].collect { |trend| Twitter::Search.new(trend.query).collect{|result| result.text } }.flatten
-  end
-  
   def tweet(post)
     raise "Not logged on" unless logged_on?
     @user.update(post)
@@ -52,5 +47,12 @@ class TwitterConnector
   def logged_on?
     return false unless @user
     @user.verify_credentials
+  end
+  
+  class << self
+    def recent_popular_content(limit = -1)
+      current_trends = Twitter::Trends.current
+      current_trends[0..limit].collect { |trend| Twitter::Search.new(trend.query).collect{|result| result.text } }.flatten
+    end
   end
 end
