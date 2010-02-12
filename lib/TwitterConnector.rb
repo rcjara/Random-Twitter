@@ -20,6 +20,12 @@ class TwitterConnector
     end
   end
   
+  def recent_content
+    # current_trends = Twitter::Trends.current
+    # results = current_trends.collect { |trend| Twitter::Search.new(trend).collect{|result| result.text } }
+    # results.flatten
+  end
+  
   def has_password?
     !@password.nil?
   end

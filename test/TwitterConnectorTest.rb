@@ -65,7 +65,7 @@ describe TwitterConnector do
       it "should not show that it has logged on" do
         @tweeter.logged_on?.should be(false)
       end
-    end
-    
+    end 
   end
+  
 end
