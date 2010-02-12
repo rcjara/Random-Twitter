@@ -43,7 +43,7 @@ describe TwitterConnector do
       
       context "on collecting recent content" do
         before(:all) do
-          @content = @tweeter.recent_content
+          @content = @tweeter.recent_content(1)
         end
         
         it "the content should be an array" do
@@ -51,7 +51,7 @@ describe TwitterConnector do
         end
         
         it "each piece of content should be a string" do
-          @content.each { |item| item.should be(String) }
+          @content.each { |item| item.class.should be(String) }
         end
         
         it "should have many pieces of content" do
