@@ -52,7 +52,7 @@ class TwitterConnector
   class << self
     def recent_popular_content(limit = -1)
       current_trends = Twitter::Trends.current
-      current_trends[0..limit].collect { |trend| Twitter::Search.new(trend.query).collect{|result| result.text } }.flatten
+      current_trends[0..limit].collect { |trend| Twitter::Search.new(trend.query).lang('en').collect{|result| result.text } }.flatten
     end
   end
 end

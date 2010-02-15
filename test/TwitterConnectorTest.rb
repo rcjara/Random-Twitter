@@ -38,6 +38,7 @@ describe TwitterConnector do
       end
 
       it "should be able to post things" do
+        break #this line is to 
         num = rand(1000)
         post = "Testing post: #{num}"
         @tweeter.tweet(post)
