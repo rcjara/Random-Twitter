@@ -1,4 +1,3 @@
-# require 'htmlentities'
 require File.expand_path(File.dirname(__FILE__) + '/HTMLDecoder')
 require 'kconv'
 
@@ -9,7 +8,6 @@ class Tweet
   attr_reader :urls
   
   def initialize(string)
-    # @original_text = HTMLEntities.new.decode(String.toutf16 string)
     @original_text = HTMLDecoder.decode(string)
     @urls = @original_text.scan(URL_PATTERN)
   end
