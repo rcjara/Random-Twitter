@@ -14,9 +14,6 @@ class MarkovWord
     @shoutable = false
     @speakable = false
     
-    @proper = MarkovWord.proper_test?(identifier)
-    @shoutable = MarkovWord.shoutable_test?(identifier)
-    
     add_parent(parent, identifier)
   end
   
@@ -43,14 +40,19 @@ class MarkovWord
   def add_identifier(identifier = @identifier)
     @count += 1
     @proper &&= MarkovWord.proper_test? identifier
-    @shoutable ||= shout_test! identifier
-    @speakable ||= speak_test! identifier
+    if MarkovWord.shoutable_test?(identifier)
+      @shoutable = true
+      @shout_count += 1
+    else 
+      @speakable = true
+      @speak_count += 1
+    end
   end
   
   def add_parent(parent, identifier)
-    parent = MarkovWord.downcase(identifier)
+    parent = MarkovWord.downcase(parent)
     @parents_count += 1
-    @parents[parent] += 1
+    @parents[parent] = @parents[parent] + 1
     add_identifier(identifier)
   end
   
@@ -84,19 +86,5 @@ class MarkovWord
     def speakable_test?(word)
       !MarkovWord.shoutable_test?(word)
     end
-  end
-  
-  private
-  
-  def shout_test!(word)
-    result = MarkovWord.shoutable_test?(word)
-    @shout_count += result ? 1 : 0
-    result
-  end
-  
-  def speak_test!(word)
-    result = MarkovWord.speakable_test?(word)
-    @speak_count += result ? 1 : 0
-    result
   end
 end

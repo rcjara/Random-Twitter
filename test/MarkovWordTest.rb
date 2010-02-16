@@ -85,7 +85,7 @@ describe MarkovWord do
         @word.parents_count.should == 4
       end
       
-      it "should still have a shout count of 2" do
+      it "should have a shout count of 2" do
         @word.shout_count.should == 2
       end
       
@@ -99,7 +99,7 @@ describe MarkovWord do
       
       it "should get all of its parents eventually" do
         results = (1..30).collect { |throw_away| @word.get_random_parent }
-        results.uniq.sort.should == @parents.sort
+        results.uniq.sort{ |a,b| a.to_s <=> b.to_s }.should == @parents.sort{ |a,b| a.to_s <=> b.to_s }
       end
       
       it_should_behave_like "a word that hasn't had any children added"
