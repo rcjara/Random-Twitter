@@ -2,6 +2,12 @@ require File.expand_path(File.dirname(__FILE__) + '/RandomTwitterHelper')
 require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovWord')
 
 describe MarkovWord do
+  shared_examples_for "a non-terminating word" do
+    it "should show that it doesn't terminate" do
+      @word.terminates?.should == false
+    end
+  end
+  
   shared_examples_for "a word that hasn't had any children added" do
     it "should show that it has no children" do
       @word.num_children.should == 0
@@ -10,6 +16,8 @@ describe MarkovWord do
     it "should show a children count of 0" do
       @word.children_count.should == 0
     end
+    
+    it_should_behave_like "a non-terminating word"
   end
   
   shared_examples_for "a word that hasn't had any parents added" do
@@ -150,6 +158,20 @@ describe MarkovWord do
       end
 
       it_should_behave_like "a word that hasn't had any parents added"
+    end
+    
+    context "on adding a terminating child" do
+      before(:each) do
+        @word.add_child("test")
+      end
+      
+      it "should have a count of two" do
+        @word.count.should == 2
+      end
+      
+      it "should show that it terminates" do
+        @word.terminates?.should == true
+      end
     end
   end
   
