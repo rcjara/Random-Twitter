@@ -66,7 +66,7 @@ describe MarkovWord do
       end
       
       it "should show a count of four" do
-        @word.count.should == 1
+        @word.count.should == 4
       end
       
       it "should be speakable" do
