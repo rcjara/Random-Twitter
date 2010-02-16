@@ -13,6 +13,7 @@ class MarkovWord
     @proper = true
     @shoutable = false
     @speakable = false
+    @terminates = false
     
     add_parent(parent, identifier)
   end
@@ -27,6 +28,10 @@ class MarkovWord
   
   def speakable?
     @speakable
+  end
+  
+  def terminates?
+    @terminates
   end
   
   def num_parents
@@ -60,8 +65,12 @@ class MarkovWord
     get_random_relative(@parents, @parents_count)
   end
   
-  def add_child(identifier, child)
-    child = MarkovWord.downcase(child)
+  def add_child(identifier, child = nil)
+    if child.nil?
+      @terminates = true
+    else
+      child = MarkovWord.downcase(child)
+    end
     @children_count += 1
     @children[child] = @children[child] + 1
     add_identifier(identifier)
