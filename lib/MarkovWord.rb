@@ -57,13 +57,18 @@ class MarkovWord
   end
   
   def get_random_parent
-    index = rand(@parents_count)
-    keys = @parents.keys
-    keys.inject(0) do |running_index, key| 
-      running_index += @parents[key]
-      return key if running_index > index
-      running_index 
-    end
+    get_random_relative(@parents, @parents_count)
+  end
+  
+  def add_child(identifier, child)
+    child = MarkovWord.downcase(child)
+    @children_count += 1
+    @children[child] = @children[child] + 1
+    add_identifier(identifier)
+  end
+  
+  def get_random_child
+    get_random_relative(@children, @children_count)
   end
   
   class << self
@@ -85,6 +90,18 @@ class MarkovWord
     
     def speakable_test?(word)
       !MarkovWord.shoutable_test?(word)
+    end
+  end
+  
+  private
+  
+  def get_random_relative(relatives, count)
+    index = rand(count)
+    keys = relatives.keys
+    keys.inject(0) do |running_index, key| 
+      running_index += relatives[key]
+      return key if running_index > index
+      running_index 
     end
   end
 end

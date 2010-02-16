@@ -58,7 +58,7 @@ describe MarkovWord do
       @word.count.should == 1
     end
     
-    context "on added some capitalized parent instances" do
+    context "on adding some capitalized parent instances" do
       before(:each) do
         @parents = [:begin, "a", "the"]
         @added_words = [ [:begin, "Test"],["a", "TEST"],["the","Test"] ]
@@ -104,8 +104,55 @@ describe MarkovWord do
       
       it_should_behave_like "a word that hasn't had any children added"
     end
+    
+    context "on adding some uncapitalized children instances" do
+      before(:each) do
+        @children = ["eats", "sucks", "blows"]
+        @added_words = [ ["Test", "eats"],["TEST", "sucks"],["test","blows"] ]
+        @added_words.each { |word_pair| @word.add_child(*word_pair) }
+      end
+
+      it "should show a count of four" do
+        @word.count.should == 4
+      end
+
+      it "should be speakable" do
+        @word.speakable?.should == true
+      end
+
+      it "should be proper" do
+        @word.proper?.should == false
+      end
+
+      it "should have three children" do
+        @word.num_children.should == 3
+      end
+
+      it "should have a children count of 4" do
+        @word.children_count.should == 3
+      end
+
+      it "should have a shout count of 2" do
+        @word.shout_count.should == 2
+      end
+
+      it "should have a speak count of 2" do
+        @word.speak_count.should == 2
+      end
+
+      it "should be able to get one of its children" do
+        @children.include?(@word.get_random_child).should == true
+      end
+
+      it "should get all of its children eventually" do
+        results = (1..30).collect { |throw_away| @word.get_random_child }
+        results.uniq.sort{ |a,b| a.to_s <=> b.to_s }.should == @children.sort{ |a,b| a.to_s <=> b.to_s }
+      end
+
+      it_should_behave_like "a word that hasn't had any parents added"
+    end
   end
   
   
-  
 end
+  
