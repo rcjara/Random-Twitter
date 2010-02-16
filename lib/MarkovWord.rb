@@ -1,12 +1,14 @@
 require 'Set'
+require 'RJObjectMods'
 
 class MarkovWord
-  attr_reader :identifier, :count, :parents_count, :children_count, :shout_count, :speak_count
+  attr_reader :identifier, :count, :parents_count, :children_count, :shout_count
+  bool_reader :proper, :shoutable, :speakable, :terminates
   
   def initialize(identifier, parent)
     @identifier = MarkovWord.downcase(identifier)
     
-    @count, @parents_count, @children_count, @shout_count, @speak_count = 0, 0, 0, 0, 0
+    @count, @parents_count, @children_count, @shout_count = 0, 0, 0, 0
     @parents = Hash.new(0)
     @children = Hash.new(0)
     
@@ -18,20 +20,8 @@ class MarkovWord
     add_parent(parent, identifier)
   end
   
-  def proper?
-    @proper
-  end
-  
-  def shoutable?
-    @shoutable
-  end
-  
-  def speakable?
-    @speakable
-  end
-  
-  def terminates?
-    @terminates
+  def speak_count
+    @count - @shout_count
   end
   
   def num_parents
@@ -50,7 +40,6 @@ class MarkovWord
       @shout_count += 1
     else 
       @speakable = true
-      @speak_count += 1
     end
   end
   
