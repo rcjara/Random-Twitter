@@ -165,6 +165,26 @@ describe MarkovWord do
         @word.terminates?.should == true
       end
     end
+    
+    context "on creating punctuation words" do
+      before(:each) do
+        @words = [".",",",":",";","!","?"].collect{ |word| MarkovWord.new(word, :begin) }
+      end
+      
+      it "each word should be punctuation" do
+        @words.each { |word| word.punctuation?.should == true  }
+      end
+    end
+    
+    context "on creating non-punctuation words" do
+      before(:each) do
+        @words = ["this","that","the","other","thing","yay"].collect{ |word| MarkovWord.new(word, :begin) }
+      end
+      
+      it "each word should not be punctuation" do
+        @words.each { |word| word.punctuation?.should == false  }
+      end
+    end
   end
   
   

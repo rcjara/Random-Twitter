@@ -3,10 +3,13 @@ require 'RJObjectMods'
 
 class MarkovWord
   attr_reader :identifier, :count, :parents_count, :children_count, :shout_count
-  bool_reader :proper, :shoutable, :speakable, :terminates
+  bool_reader :proper, :shoutable, :speakable, :terminates, :punctuation
+  
+  PUNCTUATION_REGEX = /[\.\,\:\;\!\?]/
   
   def initialize(identifier, parent)
     @identifier = MarkovWord.downcase(identifier)
+    @punctuation = @identifier.to_s.scan(PUNCTUATION_REGEX).length > 0
     
     @count, @parents_count, @children_count, @shout_count = 0, 0, 0, 0
     @parents = Hash.new(0)
