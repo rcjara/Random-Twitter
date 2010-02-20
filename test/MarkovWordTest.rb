@@ -124,14 +124,6 @@ describe MarkovWord do
         @word.count.should == 1
       end
 
-      it "should be speakable" do
-        @word.speakable?.should == true
-      end
-
-      it "should be proper" do
-        @word.proper?.should == false
-      end
-
       it "should have three children" do
         @word.num_children.should == 3
       end
@@ -162,7 +154,7 @@ describe MarkovWord do
     
     context "on adding a terminating child" do
       before(:each) do
-        @word.add_child("test")
+        @word.add_child
       end
       
       it "should have a count of two" do

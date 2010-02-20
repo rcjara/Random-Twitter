@@ -54,7 +54,7 @@ class MarkovWord
     get_random_relative(@parents, @parents_count)
   end
   
-  def add_child(identifier, child = nil)
+  def add_child(child = nil)
     if child.nil?
       @terminates = true
     else
@@ -62,7 +62,6 @@ class MarkovWord
     end
     @children_count += 1
     @children[child] = @children[child] + 1
-    add_identifier(identifier)
   end
   
   def get_random_child
