@@ -26,12 +26,13 @@ class MarkovLanguage
   end
   
   def gen_snippet
-    sentence = []
+    sentence = ""
     current_word = :begin
     while current_word = @words[current_word].get_random_child
+      sentence << " " unless @words[current_word].punctuation?
       sentence << current_word
     end
-    sentence[0].capitalize + " " + sentence[1..-1].join(" ")
+    sentence[1..-1].capitalize
   end
   
 
