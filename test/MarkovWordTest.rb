@@ -211,7 +211,7 @@ describe MarkovWord do
     
     context "on creating punctuation words" do
       before(:each) do
-        @words = [". ","! ","? ",".","!","?",",",":",";"].collect{ |word| MarkovWord.new(word, :begin) }
+        @words = [". ","! ","? ",".","!","?",",",":",";","...."].collect{ |word| MarkovWord.new(word, :begin) }
       end
       
       it "each word should be punctuation" do
@@ -223,13 +223,13 @@ describe MarkovWord do
       end
       
       it "the last six words should not be sentence endings" do
-        @words[-6..-1].each { |word| word.sentence_end?.should == false }
+        @words[-7..-1].each { |word| word.sentence_end?.should == false }
       end
     end
     
     context "on creating non-punctuation words" do
       before(:each) do
-        @words = ["this","that","the","other","thing","yay"].collect{ |word| MarkovWord.new(word, :begin) }
+        @words = ["this","that","the","other","thing","yay",":)"].collect{ |word| MarkovWord.new(word, :begin) }
       end
       
       it "each word should not be punctuation" do

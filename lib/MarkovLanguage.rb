@@ -14,7 +14,7 @@ class MarkovLanguage
   end
   
   def add_snippet(snippet)
-    pieces = (snippet + " ").scan(/\S+\b|\.\s|\?\s|\!\s|\S/u)
+    pieces = (snippet + " ").scan(/\S+\b|\.\.+|\:\S+|\.\s|\?\s|\!\s|\S/u)
     
     handle_word_pair(:begin, pieces[0])
     

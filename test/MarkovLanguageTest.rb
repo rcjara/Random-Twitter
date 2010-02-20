@@ -74,9 +74,9 @@ describe MarkovLanguage do
         "Spending Valentine's Day with my loves: Booze and the internet",
         "Valentine's Day is a bitches holiday.  #nuffsaid",
         "Valentines Day with @briannabaiz my mom and nana.. so excited",
-        "Sorry but i think its hilarious how #weallhatemiley , #wesupportmiley & #wehatemileyhaters are all trending xP",
+        "Sorry but i think its hilarious how #weallhatemiley, #wesupportmiley & #wehatemileyhaters are all trending xp",
         "Are you really justin bieber??",
-        "Wow indeed! Sven Kramer is now a trending topic - he deserves it too :)"
+        "Wow indeed!  Sven Kramer is now a trending topic - he deserves it too :)"
       ]
         
     end

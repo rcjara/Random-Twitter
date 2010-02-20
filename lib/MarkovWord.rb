@@ -10,8 +10,8 @@ class MarkovWord
   
   def initialize(identifier, parent)
     @identifier = MarkovWord.downcase(identifier)
-    @punctuation = @identifier.to_s.scan(PUNCTUATION_REGEX).length > 0
-    @sentence_end = @identifier.to_s.scan(SENTENCE_END_REGEX).length > 0
+    @punctuation = MarkovWord.is_punctuation_test?(identifier)
+    @sentence_end = MarkovWord.is_sentence_end_test?(identifier)
     
     @count, @parents_count, @children_count, @shout_count = 0, 0, 0, 0
     @parents = Hash.new(0)
@@ -102,6 +102,20 @@ class MarkovWord
     
     def speakable_test?(word)
       !MarkovWord.shoutable_test?(word)
+    end
+    
+    def is_sentence_end_test?(word)
+      word = word.to_s
+      return false unless word.scan(SENTENCE_END_REGEX).length > 0
+      return false unless word.scan(/\.\.+/).length == 0  #this is for ellipses, e.g. "...."
+      true
+    end
+    
+    def is_punctuation_test?(word)
+      word = word.to_s
+      return false unless word.scan(PUNCTUATION_REGEX).length > 0
+      return false if word.scan(/\:\S+/).length > 0    #this is for smileys
+      true
     end
   end
   
