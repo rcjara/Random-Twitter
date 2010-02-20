@@ -12,6 +12,10 @@ module RandomTwitterHelper
     # File.open(File.expand_path(File.dirname(__FILE__) + '/../config/newTweets.txt')) {|f| f.to_a }
   end
   
+  def array_of_processed_tweets
+    File.open(File.expand_path(File.dirname(__FILE__) + '/../config/TestResults')) {|f| f.map{|line| line.chomp} }
+  end
+  
   def nouns_to_markov_words(nouns)
     nouns.collect { |noun| MarkovWord.new(noun, "the") }
   end
