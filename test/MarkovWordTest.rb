@@ -117,11 +117,11 @@ describe MarkovWord do
       before(:each) do
         @children = ["eats", "sucks", "blows"]
         @added_words = [ ["Test", "eats"],["TEST", "sucks"],["test","blows"] ]
-        @added_words.each { |word_pair| @word.add_child(*word_pair) }
+        @children.each { |child| @word.add_child(child) }
       end
 
       it "should show a count of four" do
-        @word.count.should == 4
+        @word.count.should == 1
       end
 
       it "should be speakable" do
@@ -136,16 +136,16 @@ describe MarkovWord do
         @word.num_children.should == 3
       end
 
-      it "should have a children count of 4" do
+      it "should have a children count of 3" do
         @word.children_count.should == 3
       end
 
-      it "should have a shout count of 2" do
-        @word.shout_count.should == 2
+      it "should have a shout count of 1" do
+        @word.shout_count.should == 1
       end
 
-      it "should have a speak count of 2" do
-        @word.speak_count.should == 2
+      it "should have a speak count of 0" do
+        @word.speak_count.should == 0
       end
 
       it "should be able to get one of its children" do
@@ -166,7 +166,7 @@ describe MarkovWord do
       end
       
       it "should have a count of two" do
-        @word.count.should == 2
+        @word.count.should == 1
       end
       
       it "should show that it terminates" do
