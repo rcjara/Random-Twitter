@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/RandomTwitterHelper')
 require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovWord')
 
+include RandomTwitterHelper
+
 describe MarkovWord do
   shared_examples_for "a non-terminating word" do
     it "should show that it doesn't terminate" do
@@ -152,6 +154,47 @@ describe MarkovWord do
       it_should_behave_like "a word that hasn't had any parents added"
     end
     
+    context "sorting out shouting vs. non shouting words" do
+      before(:each) do
+        @non_shouting_words = ["apple","dog","bear"]
+        @shouting_words = ["APPLE","DOG","BEAR"]
+        @non_shouting_markov_words = nouns_to_markov_words(@non_shouting_words)
+        @shouting_markov_words = nouns_to_markov_words(@shouting_words)
+      end
+      
+      it "should have its non-shouting words be non-shouting" do
+        @non_shouting_markov_words.each do |word|
+          word.shoutable?.should == false
+        end
+      end
+      
+      it "should have its shouting words be shoutable" do
+        @shouting_markov_words.each do |word|
+          word.shoutable?.should == true
+        end
+      end
+      
+      it "should have its non-shouting have shout counts of 0" do
+        @non_shouting_markov_words.each do |word|
+          word.shout_count.should == 0
+        end
+      end
+      
+      it "should have its shouting words have shout counts of 1" do
+        @shouting_markov_words.each do |word|
+          word.shout_count.should == 1
+        end
+      end
+      
+      it "should have its non-shouting words fail the shoutable test after being displayed" do
+        @non_shouting_markov_words.each { |word| MarkovWord.shoutable_test?(word.display).should == false}
+      end
+      
+      it "should have its shouting words pass the shoutable test after being displayed" do
+        @shouting_markov_words.each { |word| MarkovWord.shoutable_test?(word.display).should == true}
+      end
+    end
+    
     context "on adding a terminating child" do
       before(:each) do
         @word.add_child
@@ -168,11 +211,19 @@ describe MarkovWord do
     
     context "on creating punctuation words" do
       before(:each) do
-        @words = [".",",",":",";","!","?"].collect{ |word| MarkovWord.new(word, :begin) }
+        @words = [". ","! ","? ",".","!","?",",",":",";"].collect{ |word| MarkovWord.new(word, :begin) }
       end
       
       it "each word should be punctuation" do
         @words.each { |word| word.punctuation?.should == true  }
+      end
+      
+      it "the first three words should be sentence endings" do
+        @words[0..2].each { |word| word.sentence_end?.should == true }
+      end
+      
+      it "the last six words should not be sentence endings" do
+        @words[-6..-1].each { |word| word.sentence_end?.should == false }
       end
     end
     
@@ -183,6 +234,10 @@ describe MarkovWord do
       
       it "each word should not be punctuation" do
         @words.each { |word| word.punctuation?.should == false  }
+      end
+      
+      it "each word should not be a sentence ending" do
+        @words.each { |word| word.sentence_end?.should == false  }
       end
     end
   end

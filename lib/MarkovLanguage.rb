@@ -14,7 +14,7 @@ class MarkovLanguage
   end
   
   def add_snippet(snippet)
-    pieces = (snippet + " ").scan(/\S+\b|\S/u)
+    pieces = (snippet + " ").scan(/\S+\b|\.\s|\?\s|\!\s|\S/u)
     
     handle_word_pair(:begin, pieces[0])
     
@@ -27,14 +27,23 @@ class MarkovLanguage
   
   def gen_snippet
     sentence = ""
-    current_word = :begin
-    while current_word = @words[current_word].get_random_child
-      sentence << " " unless @words[current_word].punctuation?
-      sentence << current_word
+    current_word = @words[:begin]
+    new_sentence = true
+    while current_word = @words[current_word.get_random_child]
+      sentence << current_word.display(new_sentence)
+      new_sentence = current_word.sentence_end?
     end
-    sentence[1..-1].capitalize
+    sentence.strip
   end
   
+  def fetch_word(ident)
+    return nil unless ident
+    if ident.is_a?(Symbol)
+      @words[ident]
+    else
+      @words[ident.downcase]
+    end
+  end
 
   private
   
@@ -51,13 +60,6 @@ class MarkovLanguage
     end
   end
   
-  def fetch_word(ident)
-    return nil unless ident
-    if ident.is_a?(Symbol)
-      @words[ident]
-    else
-      @words[ident.downcase]
-    end
-  end
+  
   
 end

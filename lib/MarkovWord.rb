@@ -3,13 +3,15 @@ require 'RJObjectMods'
 
 class MarkovWord
   attr_reader :identifier, :count, :parents_count, :children_count, :shout_count
-  bool_reader :proper, :shoutable, :speakable, :terminates, :punctuation
+  bool_reader :proper, :shoutable, :speakable, :terminates, :punctuation, :sentence_end
   
   PUNCTUATION_REGEX = /[\.\,\:\;\!\?]/
+  SENTENCE_END_REGEX = /\.\s|\?\s|\!\s/
   
   def initialize(identifier, parent)
     @identifier = MarkovWord.downcase(identifier)
     @punctuation = @identifier.to_s.scan(PUNCTUATION_REGEX).length > 0
+    @sentence_end = @identifier.to_s.scan(SENTENCE_END_REGEX).length > 0
     
     @count, @parents_count, @children_count, @shout_count = 0, 0, 0, 0
     @parents = Hash.new(0)
@@ -70,6 +72,16 @@ class MarkovWord
   def get_random_child
     get_random_relative(@children, @children_count)
   end
+  
+  def display(first = false)
+    display_word = identifier.to_s
+    display_word.capitalize! if first | proper?
+    display_word = " " + display_word unless punctuation?
+    return display_word unless shoutable?
+    display_word.upcase! if rand(count) < shout_count
+    display_word
+  end
+  
   
   class << self
     def downcase(identifier)
