@@ -4,6 +4,19 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovLanguage')
 include RandomTwitterHelper
 
 describe MarkovLanguage do
+  shared_examples_for "any language" do
+    it "should be able to duplicate itself and still equal itself" do
+      new_lang = @lang.dup
+      @lang.should == new_lang
+    end
+    
+    it "should not be able to diplicate itself, alter the other lang and still equal the new language" do
+      new_lang = @lang.dup
+      new_lang.add_snippet("I just added a distracting snippet.")
+      @lang .should_not == new_lang
+    end
+  end
+  
   context "a simple snippet" do
     before(:each) do
       @snippet = "This is my very small snippet."
@@ -22,6 +35,8 @@ describe MarkovLanguage do
     it "should have the right words" do
       @lang.words.sort.should == ["this","is","my","very","small","snippet",". "].sort
     end
+    
+    it_should_behave_like "any language"
   end
   
   context "another, more complex snippet" do
@@ -60,6 +75,8 @@ describe MarkovLanguage do
     it "should have the right words" do
       @lang.words.sort.should == ["this","is","my","very","small","snippet","tiny",",",". ","it","rules","! "].sort
     end
+    
+    it_should_behave_like "any language"
   end
   
   context "some real word examples" do
@@ -97,6 +114,8 @@ describe MarkovLanguage do
         @tweets = array_of_processed_tweets
         @tweets.each{ |tweet| @lang.add_snippet(tweet) }
       end
+      
+      it_should_behave_like "any language"
       
       it "should produce tweets < 140 characters" do
         50.times { snip = @lang.gen_snippet; snip.length.should <= 140 }
