@@ -3,6 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovWord')
 
 include RandomTwitterHelper
 
+#testing rush's commit
+
 describe MarkovWord do
   shared_examples_for "any word" do
     it "should be able to duplicate itself and still equal itself" do
