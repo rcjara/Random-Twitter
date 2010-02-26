@@ -204,6 +204,13 @@ describe MarkovWord do
       it "should have its shouting words pass the shoutable test after being displayed" do
         @shouting_markov_words.each { |word| MarkovWord.shoutable_test?(word.display).should == true}
       end
+      
+      it "none of these shouting, non shouting words should equal eachother" do
+        all_words = @non_shouting_markov_words + @shouting_markov_words
+        all_words.each_with_index do |word, i|  
+          all_words[(i + 1)..-1].each { |other_word| word.==(other_word).should == false }
+        end
+      end
     end
     
     context "on adding a terminating child" do
