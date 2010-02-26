@@ -11,6 +11,12 @@ describe MarkovWord do
       new_word = @word.dup
       @word.should == new_word
     end
+    
+    it "should not be able to duplicate itself, alter the new version and then still equal itself" do
+      new_word = @word.dup
+      new_word.add_child("velma")
+      @word.should_not == new_word
+    end
   end
   
   shared_examples_for "a non-terminating word" do
@@ -208,7 +214,7 @@ describe MarkovWord do
       it "none of these shouting, non shouting words should equal eachother" do
         all_words = @non_shouting_markov_words + @shouting_markov_words
         all_words.each_with_index do |word, i|  
-          all_words[(i + 1)..-1].each { |other_word| word.==(other_word).should == false }
+          all_words[(i + 1)..-1].each { |other_word| word.should_not == other_word }
         end
       end
     end

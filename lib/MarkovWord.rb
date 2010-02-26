@@ -25,6 +25,38 @@ class MarkovWord
     add_parent(parent, identifier)
   end
   
+  def dup
+    other = MarkovWord.new("","")
+    other.parents = @parents.dup
+    other.children = @children.dup
+    other.proper = @proper
+    other.shoutable = @shoutable
+    other.speakable = @speakable
+    other.terminates = @terminates
+    other.punctuation = @punctuation
+    other.sentence_end = @sentence_end
+    other.identifier = @identifier.dup
+    other.count = @count
+    other.parents_count = @parents_count
+    other.children_count = @children_count
+    other.shout_count = @shout_count
+    other
+  end
+  
+  def ==(other)
+    return false unless @identifier == other.identifier
+    return false unless @count == other.count
+    return false unless @shout_count == other.shout_count
+    return false unless speak_count == other.speak_count
+    return false unless @proper == other.proper?
+    return false unless @shoutable == other.shoutable?
+    return false unless @speakable == other.speakable?
+    return false unless @terminates == other.terminates?
+    return false unless @children == other.children
+    return false unless @parents == other.parents
+    true
+  end
+  
   def speak_count
     @count - @shout_count
   end
@@ -130,4 +162,9 @@ class MarkovWord
       running_index 
     end
   end
+  
+  protected
+  
+  attr_reader :parents, :children
+  attr_writer :parents, :children, :proper, :shoutable, :speakable, :terminates, :punctuation, :sentence_end, :identifier, :count, :parents_count, :children_count, :shout_count
 end
