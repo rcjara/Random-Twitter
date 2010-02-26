@@ -1,7 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/MarkovWord')
 
 class MarkovLanguage
-  def initialize
+  attr_accessor :limit
+  
+  def initialize(limit = 10000)
+    @limit = 140
     @words = {:begin => MarkovWord.new(:begin, nil)}
   end
   
@@ -27,12 +30,27 @@ class MarkovLanguage
   
   def gen_snippet
     sentence = ""
+    sentence_array = []
     current_word = @words[:begin]
     new_sentence = true
+    
     while current_word = @words[current_word.get_random_child]
+      sentence_array << current_word
       sentence << current_word.display(new_sentence)
       new_sentence = current_word.sentence_end?
+      break if sentence.length > @limit + 1
     end
+    
+    while sentence.length > @limit + 1
+      end_point = -2
+      while sentence_array[end_point].terminates? != true && -end_point >= sentence_array.length
+        end_point -= 1
+      end
+      return gen_snippet if -end_point >= sentence_array.length
+      sentence_array = sentence_array[0..end_point]
+      sentence = sentence_array.collect{ |word| word.display }.join
+    end
+    
     sentence.strip
   end
   

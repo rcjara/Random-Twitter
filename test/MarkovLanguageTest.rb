@@ -1,6 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/RandomTwitterHelper')
 require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovLanguage')
 
+include RandomTwitterHelper
+
 describe MarkovLanguage do
   context "a simple snippet" do
     before(:each) do
@@ -92,16 +94,17 @@ describe MarkovLanguage do
     context "on using a whole bunch of snippets" do
       before(:all) do
         @lang = MarkovLanguage.new(140)
-        array_of_processed_tweets.each{ |tweet| MarkovLangue.add_snippet(tweet) }
+        @tweets = array_of_processed_tweets
+        @tweets.each{ |tweet| @lang.add_snippet(tweet) }
       end
       
       it "should produce tweets < 140 characters" do
-        50.times { @lang.gen_snippet.length.should <= 140 }
+        50.times { snip = @lang.gen_snippet; snip.length.should <= 140 }
       end
       
       it "should produce different snippets" do
-        snippet1 = @lan.gen_snippet
-        snippet2 = @lan.gen_snippet
+        snippet1 = @lang.gen_snippet
+        snippet2 = @lang.gen_snippet
         snippet1.should_not == snippet2
       end
     end

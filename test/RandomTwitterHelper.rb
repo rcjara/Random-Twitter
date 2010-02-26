@@ -13,7 +13,7 @@ module RandomTwitterHelper
   end
   
   def array_of_processed_tweets
-    File.open(File.expand_path(File.dirname(__FILE__) + '/../config/TestResults')) {|f| f.map{|line| line.chomp} }
+    File.open(File.expand_path(File.dirname(__FILE__) + '/../config/TestResults')) {|f| f.map{|line| line.chomp.toutf8} }
   end
   
   def nouns_to_markov_words(nouns)

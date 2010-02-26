@@ -4,6 +4,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/MarkovWord')
 include RandomTwitterHelper
 
 describe MarkovWord do
+  shared_examples_for "any word" do
+    it "should be able to duplicate itself and still equal itself" do
+      new_word = @word.dup
+      @word.should == new_word
+    end
+  end
+  
   shared_examples_for "a non-terminating word" do
     it "should show that it doesn't terminate" do
       @word.terminates?.should == false
@@ -61,6 +68,7 @@ describe MarkovWord do
       @word.speak_count.should == 0
     end
 
+    it_should_behave_like "any word"
     it_should_behave_like "a word that hasn't had any children added"
     it_should_behave_like "a word that hasn't had any parents added"
     
@@ -112,6 +120,7 @@ describe MarkovWord do
         results.uniq.sort{ |a,b| a.to_s <=> b.to_s }.should == @parents.sort{ |a,b| a.to_s <=> b.to_s }
       end
       
+      it_should_behave_like "any word"
       it_should_behave_like "a word that hasn't had any children added"
     end
     

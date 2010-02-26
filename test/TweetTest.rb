@@ -81,7 +81,6 @@ describe Tweet do
     it "should clean all of the damn tweets properly" do
       File.open(File.expand_path(File.dirname(__FILE__) + '/../config/TestResults'), 'w') do |f|
         @dirty_tweets.each_with_index do |dirty_tweet, i| 
-          puts i+1
           tweet = Tweet.new(dirty_tweet)
           f << tweet.just_text + "\n"
           tweet.just_text.should == @cleaned_tweets[i]
