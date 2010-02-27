@@ -8,6 +8,21 @@ class MarkovLanguage
     @words = {:begin => MarkovWord.new(:begin, nil)}
   end
   
+  def ==(other)
+    return false unless @limit == other.limit
+    return false unless @words == other.word_hash
+    true
+  end
+  
+  def dup
+    other = MarkovLanguage.new(@limit)
+    keys = @words.keys
+    keys.each do |key|
+      other.word_hash[key] = @words[key].dup
+    end
+    other
+  end
+  
   def words
     @words.keys.select{|word| word.is_a?(String)}
   end
@@ -78,6 +93,12 @@ class MarkovLanguage
     end
   end
   
+  protected
   
+  attr_writer :words
+  
+  def word_hash
+    @words
+  end
   
 end

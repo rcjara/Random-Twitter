@@ -35,7 +35,7 @@ class MarkovWord
     other.terminates = @terminates
     other.punctuation = @punctuation
     other.sentence_end = @sentence_end
-    other.identifier = @identifier.dup
+    other.identifier = @identifier.is_a?(String) ? @identifier.dup : @identifier
     other.count = @count
     other.parents_count = @parents_count
     other.children_count = @children_count

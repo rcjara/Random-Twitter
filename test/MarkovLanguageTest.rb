@@ -13,7 +13,7 @@ describe MarkovLanguage do
     it "should not be able to diplicate itself, alter the other lang and still equal the new language" do
       new_lang = @lang.dup
       new_lang.add_snippet("I just added a distracting snippet.")
-      @lang .should_not == new_lang
+      @lang.should_not == new_lang
     end
   end
   
