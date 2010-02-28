@@ -1,23 +1,13 @@
 require 'twitter'
+require File.expand_path(File.dirname(__FILE__) + '/SimpleConfigParser')
 
 class TwitterConnector
-  attr_reader :user_name
+  attr_reader :username
   
-  def initialize(config_file)
-    load_config_file(config_file)
-  end
+  include SimpleConfigParser
   
-  def load_config_file(config_file)
-    File.open(config_file, 'r') do |file|
-      first_regex_result = file.readline.scan(/(username:)(\s*)(\S+)/)
-      second_regex_result = file.readline.scan(/(password:)(\s*)(\S+)/)
-      begin
-        @user_name = first_regex_result[0][2]
-        @password = second_regex_result[0][2]
-      rescue
-        raise "Bad Config File"
-      end
-    end
+  def initialize(config_path)
+    parse_config_file(config_path, :username, :password)
   end
   
   def tweet(post)
@@ -27,9 +17,8 @@ class TwitterConnector
   
   def most_recent_post
     raise "Not logged on" unless logged_on?
-    Twitter::Search.new.from(@user_name).to_a.first.text
+    Twitter::Search.new.from(@username).to_a.first.text
   end
-  
   
   def has_password?
     !@password.nil?
@@ -40,7 +29,7 @@ class TwitterConnector
   end
   
   def connect
-    twitter_auth = Twitter::HTTPAuth.new(@user_name, @password)
+    twitter_auth = Twitter::HTTPAuth.new(@username, @password)
     @user = Twitter::Base.new(twitter_auth)
   end
   

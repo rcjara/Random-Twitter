@@ -5,7 +5,7 @@ describe TwitterConnector do
 
   shared_examples_for "A TwitterConnector that has loaded a good config file" do
     it "should have loaded the proper username" do
-      @tweeter.user_name.should == "rauljara"
+      @tweeter.username.should == "rauljara"
     end
 
     it "should show that it has loaded a password" do
@@ -38,7 +38,7 @@ describe TwitterConnector do
       end
 
       it "should be able to post things" do
-        break #this line is to 
+        return #this line is to 
         num = rand(1000)
         post = "Testing post: #{num}"
         @tweeter.tweet(post)
