@@ -5,9 +5,9 @@ include RandomTwitterHelper
 
 describe RandomTwitter do
   before(:each) do
-    @db_path = File.expand_path(File.dirname(__FILE__) + '../config/db.sqlite')
-    File.delete(db_path) if File.exists?(db_path)
-    @twit = RandomTwitter.new(@db_path)
+    @db_path = File.expand_path(File.dirname(__FILE__) + '/../config/db.sqlite')
+    File.delete(@db_path) if File.exists?(@db_path)
+    @twit = RandomTwitter.new(File.dirname(__FILE__) + '/../config/overallconfig')
   end
   
   it "should have a database at the proper path" do

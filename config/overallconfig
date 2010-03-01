@@ -1,2 +1,2 @@
-account-config: /Users/rauljara/Documents/Programming/Ruby/RandomTwitter/config/rjaccount
-database: /Users/rauljara/Documents/Programming/Ruby/RandomTwitter/config/db.sqlite
+account_path: /Users/rauljara/Documents/Programming/Ruby/RandomTwitter/config/rjaccount
+database_path: /Users/rauljara/Documents/Programming/Ruby/RandomTwitter/config/db.sqlite
