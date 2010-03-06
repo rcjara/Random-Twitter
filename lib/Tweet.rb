@@ -5,10 +5,11 @@ class Tweet
   URL_PATTERN = /http:\/\/\S+/
   WWW_PATTERN = /www.\S+.\S+/
   
-  attr_reader :urls
+  attr_reader :urls, :time
   
-  def initialize(string)
-    @original_text = HTMLDecoder.decode(string)
+  def initialize(tweet_hash)
+    @time = tweet_hash[:time]
+    @original_text = HTMLDecoder.decode(tweet_hash[:text])
     @urls = @original_text.scan(URL_PATTERN)
   end
   

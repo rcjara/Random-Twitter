@@ -56,7 +56,7 @@ describe TwitterConnector do
         end
         
         it "each piece of content should be a string" do
-          @content.each { |item| item.class.should be(String) }
+          @content.each { |item| item[:text].class.should be(String) }
         end
         
         it "should have many pieces of content" do

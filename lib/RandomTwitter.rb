@@ -12,6 +12,7 @@ class RandomTwitter
     @connector = TwitterConnector.new(@account_path)
     @db = Sequel.sqlite(@database_path)
     create_database unless File.exists?(@database_path)
+    @tweets_table = @db[:tweets]
   end
   
   def create_database
@@ -21,5 +22,17 @@ class RandomTwitter
       Time :time_tweeted
     end
   end
+  
+  def num_tweets
+    @tweets.count
+  end
+  
+  def grab_tweets
+    new_tweets = TwitterConnector.grab_recent_content
+    new_tweets.each do |tweet_hash|
+      
+    end
+  end
+  
   
 end
