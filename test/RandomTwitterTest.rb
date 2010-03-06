@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/RandomTwitter')
 include RandomTwitterHelper
 
 describe RandomTwitter do
-  before(:each) do
+  before(:all) do
     @db_path = File.expand_path(File.dirname(__FILE__) + '/../config/db.sqlite')
     File.delete(@db_path) if File.exists?(@db_path)
     @twit = RandomTwitter.new(File.dirname(__FILE__) + '/../config/overallconfig')
@@ -19,8 +19,12 @@ describe RandomTwitter do
   end
   
   context "after adding grabbing tweets off the internet" do
-    before(:each) do
+    before(:all) do
       @twit.grab_tweets
+    end
+    
+    it "should return an array of tweets that are all of class Tweet" do
+      @twit.tweets.each { |tweet| tweet.should be_instance_of(Tweet) }
     end
     
     it "should show that it has a bunch of tweets" do
@@ -33,8 +37,7 @@ describe RandomTwitter do
     
     context "and then saving and creating a new twit from the save" do
       before(:each) do
-        @twit.save
-        @other_twit = RandomTwitter.new(@db_path)
+        @other_twit = RandomTwitter.new(File.dirname(__FILE__) + '/../config/overallconfig')
       end
       
       it "should be the same as the other twit" do

@@ -42,8 +42,8 @@ class TwitterConnector
     def recent_popular_content(limit = -1)
       current_trends = Twitter::Trends.current
       current_trends[0..limit].collect do |trend| 
-        Twitter::Search.new(trend.query).lang('en').collect do
-          |result| {:text => result.text, :date => result.time} 
+        Twitter::Search.new(trend.query).lang('en').collect do |result| 
+          {:text => result.text, :time => Time.now} 
         end 
       end.flatten
     end

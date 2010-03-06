@@ -9,7 +9,7 @@ class Tweet
   
   def initialize(tweet_hash)
     @time = tweet_hash[:time]
-    @original_text = HTMLDecoder.decode(tweet_hash[:text])
+    @original_text = HTMLDecoder.decode(tweet_hash[:text].toutf8)
     @urls = @original_text.scan(URL_PATTERN)
   end
   
