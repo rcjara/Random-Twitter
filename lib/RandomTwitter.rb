@@ -14,6 +14,24 @@ class RandomTwitter
     create_database unless File.exists?(@database_path)
     @tweets_table = @db[:tweets]
     gen_tweets
+    gen_language
+  end
+  
+  def post(automatically = false) 
+    @connector.connect
+    post = generate_tweet
+    continue = !automatically
+    while continue
+      puts "This is the tweet: " + post
+      print "Is it acceptable? "
+      continue = gets.chomp != "y"
+      post = generate_tweet if continue
+    end
+    @connector.tweet(post)
+  end
+  
+  def generate_tweet
+    language.gen_snippet
   end
   
   def create_database
@@ -22,6 +40,11 @@ class RandomTwitter
       String :text
       Time :time
     end
+  end
+  
+  def ==(other)
+    return false unless language == other.language
+    true
   end
   
   def tweets_after(time = Time.now)
@@ -45,12 +68,17 @@ class RandomTwitter
     @tweets
   end
   
+  def language
+    gen_language if @language_altered
+    @language
+  end
   
   private
   
   def insert_tweet_hash(tweet_hash)
     @tweets_table.insert(:text => tweet_hash[:text], :time => tweet_hash[:time])
     @tweets_table_altered = true
+    @language_altered = true
   end
   
   
@@ -58,5 +86,12 @@ class RandomTwitter
     @tweets = @tweets_table.collect { |tweet_hash| Tweet.new(tweet_hash) }
     @tweets_table_altered = false
   end
+  
+  def gen_language
+    @language = MarkovLanguage.new
+    tweets.each { |tweet| @language.add_snippet(tweet.just_text) }
+    @language_altered = false
+  end
+  
   
 end

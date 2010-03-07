@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/MarkovWord')
 class MarkovLanguage
   attr_accessor :limit
   
-  def initialize(limit = 10000)
-    @limit = 140
+  def initialize(limit = 140)
+    @limit = limit
     @words = {:begin => MarkovWord.new(:begin, nil)}
   end
   

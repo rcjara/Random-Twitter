@@ -41,7 +41,7 @@ describe RandomTwitter do
       end
       
       it "should be the same as the other twit" do
-        @twit.should == @other_twit
+        (@twit == @other_twit).should == true
       end
       
       it "should not equal the other twit if it grabs more tweets" do

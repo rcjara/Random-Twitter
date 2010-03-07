@@ -1,0 +1,6 @@
+#!/opt/local/bin/ruby
+
+require File.expand_path(File.dirname(__FILE__) + '/../lib/RandomTwitter.rb')
+@twit = RandomTwitter.new("/Users/rauljara/Documents/Programming/Ruby/RandomTwitter/config/RandomTwitterConfig")
+@twit.grab_tweets
+@twit.post(true)
