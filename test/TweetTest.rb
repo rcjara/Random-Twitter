@@ -77,6 +77,26 @@ describe Tweet do
     end
   end
   
+  context "tweet_d" do
+    before(:each) do
+     @tweet = Tweet.new(:text=>"RT @bkmacdaddy Google Buzz Surpasses 9 Million Posts and Comments http://bit.ly/9x7vAZ", :time=>Time.now)
+    end
+    
+    it "should be able to remove a url" do
+     @tweet.just_text.should == "Google Buzz Surpasses 9 Million Posts and Comments {url}"
+    end
+  end
+  
+  context "tweet_e" do
+   before(:each) do
+     @tweet = Tweet.new(:text=>"RT Google Buzz Surpasses 9 Million Posts and Comments http://bit.ly/9x7vAZ", :time=>Time.now)
+    end
+
+    it "should be able to remove a url" do
+     @tweet.just_text.should == "Google Buzz Surpasses 9 Million Posts and Comments {url}"
+    end
+  end
+  
   context "a whole bunch of tweets" do
     before(:each) do
       @dirty_tweets = array_of_tweets

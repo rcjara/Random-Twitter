@@ -34,12 +34,15 @@ class MarkovLanguage
   def add_snippet(snippet)
     pieces = (snippet + " ").scan(/\S+\b|\.\.+|\:\S+|\.\s|\?\s|\!\s|\S/u)
     
+    return unless pieces
+    return unless pieces.length > 0
+    
     handle_word_pair(:begin, pieces[0])
     
     pieces.each_cons(2) do |word_pair|
       handle_word_pair(word_pair[0], word_pair[1])
     end
-    
+
     @words[pieces[-1].downcase].add_child(nil)
   end
   
@@ -81,6 +84,7 @@ class MarkovLanguage
   private
   
   def handle_word_pair(first_word, second_word)
+    return unless first_word && second_word
     first_markov_word = fetch_word(first_word)
     second_markov_word = fetch_word(second_word)
     raise "Warning: This word really should exist by now" unless first_markov_word

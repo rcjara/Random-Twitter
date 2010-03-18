@@ -8,6 +8,29 @@ describe RandomTwitter do
     @db_path = File.expand_path(File.dirname(__FILE__) + '/../config/db.sqlite')
     File.delete(@db_path) if File.exists?(@db_path)
     @twit = RandomTwitter.new(File.dirname(__FILE__) + '/../config/overallconfig')
+    @unnacceptable_tweets = [
+      "#yahoo",
+      "#funky #little #sandwhich",
+      "#funky #little #sandwich."
+      ]
+    @acceptable_tweets = [
+      "Yes!!",
+      "#fuckthat noise",
+      "eat #redmeat"
+      ]
+  end
+  
+  it "should not accept the unnacceptable tweets" do
+    @unnacceptable_tweets.each do |string|
+      RandomTwitter.acceptable?(string).should == false
+    end
+  end
+  
+  it "should accept acceptable tweets" do
+    @acceptable_tweets.each do |string|
+      RandomTwitter.acceptable?(string).should == true
+    end
+    
   end
   
   it "should have a database at the proper path" do
