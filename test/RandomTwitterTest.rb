@@ -9,6 +9,8 @@ describe RandomTwitter do
     File.delete(@db_path) if File.exists?(@db_path)
     @twit = RandomTwitter.new(File.dirname(__FILE__) + '/../config/overallconfig')
     @unnacceptable_tweets = [
+      "",
+      " ",
       "#yahoo",
       "#funky #little #sandwhich",
       "#funky #little #sandwich."

@@ -31,7 +31,11 @@ class RandomTwitter
   end
   
   def generate_tweet
-    language.gen_snippet
+    snippet = ""
+    until RandomTwitter.acceptable?(snippet)
+      snippet = language.gen_snippet
+    end
+    snippet
   end
   
   def create_database
@@ -71,6 +75,15 @@ class RandomTwitter
   def language
     gen_language if @language_altered
     @language
+  end
+  
+  def self.acceptable?(string)
+    results = string.scan(/\S+/)
+    return false if results.empty?
+    results.each do |result|
+      return true unless result[0].match(/^#/)
+    end
+    false
   end
   
   private
