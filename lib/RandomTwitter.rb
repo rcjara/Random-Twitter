@@ -8,7 +8,11 @@ class RandomTwitter
   include SimpleConfigParser
   
   def initialize(config_path)
-    parse_config_file(config_path, :account_path, :database_path)
+    parse_config_file(config_path, :account_path, :database_path, :time_limit)
+    @time_limit = @time_limit.to_i * 24 * 60 * 60
+    if @time_limit < 0
+      @time_limit = nil
+    end
     @connector = TwitterConnector.new(@account_path)
     @db = Sequel.sqlite(@database_path)
     create_database unless File.exists?(@database_path)
@@ -96,7 +100,7 @@ class RandomTwitter
   
   
   def gen_tweets
-    @tweets = @tweets_table.collect { |tweet_hash| Tweet.new(tweet_hash) }
+    @tweets = @tweets_table.filter{ |o| @time_limit.nil? || o.time > Time.now - @time_limit }.collect { |tweet_hash| Tweet.new(tweet_hash) }
     @tweets_table_altered = false
   end
   
